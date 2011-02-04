@@ -83,10 +83,10 @@ public class JavascriptVerifierServlet extends HttpServlet {
 	{
 		/*
 		ScriptEngineManager manager = new ScriptEngineManager();
-        ScriptEngine engine = manager.getEngineByName("JavaScript");
-        engine.eval(new FileReader("E:/odeskproject/appengine/env.js"));
-        engine.eval(script);appengine
-        */
+		ScriptEngine engine = manager.getEngineByName("JavaScript");
+		engine.eval(new FileReader("E:/odeskproject/appengine/env.js"));
+		engine.eval(script);appengine
+		*/
 
 		//Object ret = jsContext.evaluateString(scope, script, "<stdin>", 0,
 		//        null);
@@ -96,7 +96,7 @@ public class JavascriptVerifierServlet extends HttpServlet {
 		Scriptable scope = cx.initStandardObjects();
 		cx.setOptimizationLevel(-1);
 		cx.evaluateReader(scope, new FileReader("WEB-INF/js/env.rhino.js"), "env.rhino.js", 0, null);
-                cx.evaluateReader(scope, new FileReader("WEB-INF/js/assert_equal.js"), "assert_equal.js", 0, null);
+		cx.evaluateReader(scope, new FileReader("WEB-INF/js/assert_equal.js"), "assert_equal.js", 0, null);
 		//cx.evaluateReader(scope, new FileReader("WEB-INF/js/jquery-1.4.2.js"), "jquery-1.4.2.js", 0, null);
 		//Main.processSource(cx, "E:/odeskproject/appengine/thatcher-enthatcherv-js-cb738b9/dist/env.rhino.js");
 		//cx.evaluateReader(scope, new FileReader("E:/odeskproject/appengine/jquery-1.4.2.js"), "<stdin>", 0, null);
@@ -113,8 +113,8 @@ public class JavascriptVerifierServlet extends HttpServlet {
 		for(String testscript : testscripts)
 		{
 			System.out.println("Evaluating test "+testscript);
-                        
-                        if(testscript.trim().equals(""))
+
+			if(testscript.trim().equals(""))
 				continue;
 			try
 			{
@@ -124,8 +124,8 @@ public class JavascriptVerifierServlet extends HttpServlet {
 			}
 			catch(Throwable e)
 			{
-			    System.out.println("Caught an error for test "+testscript);
-                            System.out.println(e.getMessage());
+				System.out.println("Caught an error for test "+testscript);
+				System.out.println(e.getMessage());
 				HashMap<String, Object> resulthash = new HashMap<String, Object>();
 				solved = false;
 
