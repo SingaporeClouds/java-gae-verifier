@@ -1,6 +1,7 @@
 package com.singpath.verifier;
 
 import static org.junit.Assert.*;
+import static org.junit.matchers.JUnitMatchers.*;
 import static org.mockito.Mockito.*;
 
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class JavascriptVerifierServletTest {
 	}
 
 	@Test
-	public void testParseJsSimple() throws Exception {
+	public void testParseJsSimple() throws Throwable {
 		assertJSONHasKey("solved", "true",
 			servlet.parseJs("", "assert_equal(1,1);"));
 		assertJSONHasKey("solved", "true",
@@ -61,7 +62,7 @@ public class JavascriptVerifierServletTest {
 	}
 
 	@Test
-	public void testParseJsWhitespace() throws Exception {
+	public void testParseJsWhitespace() throws Throwable {
 		assertJSONHasKey("solved", "true",
 			servlet.parseJs(
 				"function add(a, b) {\n"
@@ -75,9 +76,8 @@ public class JavascriptVerifierServletTest {
 		parameters.put("script", "");
 		parameters.put("tests", "assert_equal(add(1,2),3);");
 		servlet.doPost(request, response);
-		assertEquals(
-			"{\"errors\":\"java.lang.ArrayIndexOutOfBoundsException: 1\"}\r\n",
-			response_writer.toString());
+		assertThat(response_writer.toString(),
+			containsString("org.mozilla.javascript.EcmaError: ReferenceError: \\\"add\\\" is not defined."));
 	}
 
 }
