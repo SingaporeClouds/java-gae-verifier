@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://java.sun.com/xml/ns/javaee"
+xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	<servlet>
+		<servlet-name>JavaVerifier</servlet-name>
+		<servlet-class>com.singpath.verifier.JavaVerifierServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JavaVerifier</servlet-name>
+		<url-pattern>/java</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>javascript</servlet-name>
+		<servlet-class>com.singpath.verifier.JavascriptVerifierServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>javascript</servlet-name>
+		<url-pattern>/javascript</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>ruby</servlet-name>
+		<servlet-class>com.singpath.verifier.RubyVerifierServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ruby</servlet-name>
+		<url-pattern>/ruby</url-pattern>
+	</servlet-mapping>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
+
