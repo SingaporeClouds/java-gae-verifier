@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.mozilla.javascript.Context;
 //import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.JavaScriptException;
+import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
 //import org.mozilla.javascript.ScriptableObject;
 
@@ -35,7 +37,7 @@ public class JavascriptVerifierServlet extends HttpServlet {
 		{
 			System.out.print(instance.parseJs(testscript, "org.junit.Assert.assertEquals(firstname, \"Hee\");\norg.junit.Assert.assertEquals(firstname, \"Hege\");"));
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
 			e.printStackTrace();
 		}
@@ -68,7 +70,7 @@ public class JavascriptVerifierServlet extends HttpServlet {
 
 			resp.getWriter().println(this.parseJs(script, tests));
 		}
-		catch(Exception e)
+		catch(Throwable e)
 		{
 			logger.info("error in doPost:" + e);
 			HashMap<String, String> em = new HashMap<String, String>();
@@ -79,7 +81,7 @@ public class JavascriptVerifierServlet extends HttpServlet {
 
 
 
-	public String parseJs(String script, String tests) throws Exception
+	public String parseJs(String script, String tests) throws Throwable
 	{
 		/*
 		ScriptEngineManager manager = new ScriptEngineManager();
@@ -129,20 +131,24 @@ public class JavascriptVerifierServlet extends HttpServlet {
 				HashMap<String, Object> resulthash = new HashMap<String, Object>();
 				solved = false;
 
-				String failS = e.getMessage();
-				failS = failS.replace("expected:<", "");
-				failS = failS.replace("> but was:<", "MYSPLIT");
-				failS = failS.replace(">", "MYSPLIT");
-				String[] ss = failS.split("MYSPLIT");
+				if (e instanceof JavaScriptException) {
+					// check that we get a {exp, act} js object thrown
+					JavaScriptException js_err = (JavaScriptException) e;
+					if (!(js_err.getValue() instanceof NativeObject))
+						throw e;
+					NativeObject assert_err = (NativeObject) js_err.getValue();
+					if (!assert_err.has("exp", null) || !assert_err.has("act", null))
+						throw e;
 
-				if (ss.length != 2)
-					throw new BadFailureMessageException(failS);
-
-				resulthash.put("expected", ss[0]);
-				resulthash.put("received", ss[1]);
-				resulthash.put("call", testscript);
-				resulthash.put("correct", false);
-				testResults.add(new JSONObject(resulthash));
+					resulthash.put("expected", assert_err.get("exp", null));
+					resulthash.put("received", assert_err.get("act", null));
+					resulthash.put("call", testscript);
+					resulthash.put("correct", false);
+					testResults.add(new JSONObject(resulthash));
+				} else {
+					// TODO js error (eg. syntax error) - for now, rethrow
+					throw e;
+				}
 
 				continue;
 			}
