@@ -23,7 +23,7 @@ import org.json.JSONObject;
 
 @SuppressWarnings("serial")
 public class RubyVerifierServlet extends HttpServlet{
-	
+
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
 	/**
@@ -31,7 +31,7 @@ public class RubyVerifierServlet extends HttpServlet{
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
+
 		/*
 		RubyVerifierServlet instance = new RubyVerifierServlet();
 		try
@@ -42,7 +42,7 @@ public class RubyVerifierServlet extends HttpServlet{
 		{
 			System.out.println(e.getMessage());
 		}
-		
+
 		*/
 		ScriptEngine jruby = new ScriptEngineManager().getEngineByName("jruby");
 		try
@@ -54,10 +54,10 @@ public class RubyVerifierServlet extends HttpServlet{
 		{
 			e.printStackTrace();
 		}
-		
+
 
 	}
-	
+
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	throws IOException{
 		//String script = req.getParameter("script");
@@ -65,14 +65,14 @@ public class RubyVerifierServlet extends HttpServlet{
 		String userStr = req.getParameter("jsonrequest");
 		String script = null;
 		String tests = null;
-		
-			
+
+
 		try
 		{
 			if(userStr != null)
 			{
 				JSONObject jsonObj = new JSONObject(userStr);
-				
+
 				script = jsonObj.getString("solution");
 				tests = jsonObj.getString("tests");
 			}
@@ -81,7 +81,7 @@ public class RubyVerifierServlet extends HttpServlet{
 				script = req.getParameter("script");
 				tests = req.getParameter("tests");
 			}
-			
+
 			resp.getWriter().println(this.parseRuby(script, tests));
 		}
 		catch(Exception e)
@@ -92,69 +92,69 @@ public class RubyVerifierServlet extends HttpServlet{
 			resp.getWriter().println(new JSONObject(em).toString());
 		}
 	}
-	
+
 	public String parseRuby(String script, String tests) throws Exception
 	{
 		StringBuffer strResult = new StringBuffer();
-	    
-	    ByteArrayOutputStream bufStream;
-	    PrintStream bufferedOut;
-		
-	    bufStream = new ByteArrayOutputStream();
+
+		ByteArrayOutputStream bufStream;
+		PrintStream bufferedOut;
+
+		bufStream = new ByteArrayOutputStream();
 		try
 		{
 			bufferedOut = new PrintStream(bufStream, true, "UTF-8");
-		} 
-		catch (UnsupportedEncodingException e) 
+		}
+		catch (UnsupportedEncodingException e)
 		{
 			throw new RuntimeException(e);
 		}
-		
+
 		RubyInstanceConfig config = new RubyInstanceConfig();
-	    config.setOutput(bufferedOut);
-	    config.setError(bufferedOut);
-	    //config.setOutput(System.out);
-            //config.setError(System.out);
-            
-        Ruby runtime = JavaEmbedUtils.initialize(new ArrayList(), config);
-	    RubyRuntimeAdapter evaler = JavaEmbedUtils.newRuntimeAdapter();
-	    //evaler.eval(runtime, "include Java");
-	    evaler.eval(runtime, script);
-	    String buf = new String(bufStream.toByteArray(), "UTF-8");
-	    bufStream.reset();
-	    
-	    String[] testscripts = tests.split("\n");
+		config.setOutput(bufferedOut);
+		config.setError(bufferedOut);
+		//config.setOutput(System.out);
+		//config.setError(System.out);
+
+		Ruby runtime = JavaEmbedUtils.initialize(new ArrayList(), config);
+		RubyRuntimeAdapter evaler = JavaEmbedUtils.newRuntimeAdapter();
+		//evaler.eval(runtime, "include Java");
+		evaler.eval(runtime, script);
+		String buf = new String(bufStream.toByteArray(), "UTF-8");
+		bufStream.reset();
+
+		String[] testscripts = tests.split("\n");
 		boolean solved = true;
-		
+
 		ArrayList<JSONObject> testResults = new ArrayList<JSONObject>();
-		
+
 		for(String testscript : testscripts)
 		{
 			if(testscript.trim().equals(""))
 				continue;
 			try
 			{
-                            //evaler.eval(runtime, "include Java\n" + script + "\n" + testscript);
-                            String theCode = script+"\n\n";
-                            theCode += "require 'test/unit'\n";
-                            theCode += "extend Test::Unit::Assertions \n";
-                            //theCode += "assert_equal(5, 5)\n";
-                            theCode += testscript+"\n";
+				//evaler.eval(runtime, "include Java\n" + script + "\n" + testscript);
+				String theCode = script+"\n\n";
+				theCode += "require 'test/unit'\n";
+				theCode += "extend Test::Unit::Assertions \n";
+				//theCode += "assert_equal(5, 5)\n";
+				theCode += testscript+"\n";
 
-                            System.out.println("Will execute this code.");
-                            System.out.println(theCode);
+				System.out.println("Will execute this code.");
+				System.out.println(theCode);
 
-                            evaler.eval(runtime, theCode);
-                            
-                        }
+				evaler.eval(runtime, theCode);
+
+			}
 			catch(Throwable e)
-			{				
+			{
 				System.out.println("Error caught");
-                                System.out.println(e.getMessage());
+								System.out.println(e.getMessage());
 				HashMap<String, Object> resulthash = new HashMap<String, Object>();
 				solved = false;
-				
-					
+
+
 				//String failS = e.getMessage();
 				//failS = failS.substring(failS.indexOf("expected"));
 				//failS = failS.substring(0, failS.indexOf(";"));
@@ -165,13 +165,13 @@ public class RubyVerifierServlet extends HttpServlet{
 				resulthash.put("expected", "");
 				//resulthash.put("received", ss[1]);
 				resulthash.put("received", e.getMessage());
-                                resulthash.put("call", testscript);
-				resulthash.put("correct", false);		
+								resulthash.put("call", testscript);
+				resulthash.put("correct", false);
 				testResults.add(new JSONObject(resulthash));
-	
+
 				continue;
 			}
-                        System.out.println("No error thrown for "+testscript);
+			System.out.println("No error thrown for "+testscript);
 			HashMap<String, Object> resulthash = new HashMap<String, Object>();
 			//resulthash.put("expected", value);
 			//resulthash.put("received", valueincode);
@@ -187,7 +187,7 @@ public class RubyVerifierServlet extends HttpServlet{
 		JSONObject json = new JSONObject(resultjson);
 		strResult.append(json.toString());
 
-	
+
 		return strResult.toString();
 	}
 
