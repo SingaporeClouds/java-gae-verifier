@@ -3,6 +3,6 @@
  */
 function assert_equal(a,b){
     if (a==b) return true;
-    else throw "expected:<"+a+"> but was:<"+b+">";
+    else throw {exp: a, act: b};
 }
 
