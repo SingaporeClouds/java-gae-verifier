@@ -134,6 +134,10 @@ public class JavascriptVerifierServlet extends HttpServlet {
 				failS = failS.replace("> but was:<", "MYSPLIT");
 				failS = failS.replace(">", "MYSPLIT");
 				String[] ss = failS.split("MYSPLIT");
+
+				if (ss.length != 2)
+					throw new BadFailureMessageException(failS);
+
 				resulthash.put("expected", ss[0]);
 				resulthash.put("received", ss[1]);
 				resulthash.put("call", testscript);
