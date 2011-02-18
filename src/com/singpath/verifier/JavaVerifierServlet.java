@@ -9,6 +9,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.*;
 
@@ -166,14 +168,26 @@ public class JavaVerifierServlet extends HttpServlet {
 				}
 
 				String failS = e.getTarget().getMessage();
-				failS = failS.replace("expected:<", "");
-				failS = failS.replace("> but was:<", ",");
-				failS = failS.replace(">", "");
-				String[] ss = failS.split(",");
-				resulthash.put("expected", ss[0]);
-				resulthash.put("received", ss[1]);
-				resulthash.put("call", testscript);
-				resulthash.put("correct", false);
+				
+				// Compile and use regular expression to find the expected and received values
+				String patternStr = "^expected:<(.*)> but was:<(.*)>$";
+				Pattern pattern = Pattern.compile(patternStr);
+				Matcher matcher = pattern.matcher(failS);
+				if (matcher.find()) {
+					resulthash.put("expected", matcher.group(1));
+					resulthash.put("received", matcher.group(2));
+					resulthash.put("call", testscript);
+					resulthash.put("correct", false);
+				} else { //if the regular expression fails, use the old method
+					failS = failS.replace("expected:<", "");
+					failS = failS.replace("> but was:<", ",");
+					failS = failS.replace(">", "");
+					String[] ss = failS.split(",");
+					resulthash.put("expected", ss[0]);
+					resulthash.put("received", ss[1]);
+					resulthash.put("call", testscript);
+					resulthash.put("correct", false);
+				}
 				testResults.add(new JSONObject(resulthash));
 				continue;
 			}
