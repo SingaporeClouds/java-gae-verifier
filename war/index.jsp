@@ -25,8 +25,8 @@
     	Select the language before you do the test.
 		<select name="language" id="language" onchange="changeAction()">
 		<option value = "/javascript">javascript</option>
-        <option value = "/ruby">ruby</option>
-        <option value = "/java">java</option>
+		<option value = "/ruby">ruby</option>
+		<option value = "/php">php</option>
 		</select>
 		<script type="text/javascript" Language="JavaScript">
 		function changeAction() {
@@ -40,15 +40,14 @@
         jsonrequest:<br><textarea name="jsonrequest" rows="10" cols="50">
 {"solution": solution, "tests": tests, "examples": examples} 
         </textarea> <br>
-        <input onclick="changeAction()" type="submit" value="Submit" />
+        <input type="submit" value="Submit" />
 
     </form>
-	
+	<br><a href="info.php">info.php</a>
 	
 	<div id = "footer">
 	<font color="red">
-	Hi, Chris.
-	Wish you can see this page, I finally make it working, but actually I am not understanding how it works and how to do test. Can help me with that? Thank you.
+	Developer:wgx731 follow me @wgx731
 	</font>
 	</div>
     </body>
