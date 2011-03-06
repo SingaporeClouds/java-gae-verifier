@@ -1,18 +1,21 @@
 <?php
-function assertEquals($test,$result){
-	if ($test == $result){
-		return true;
+function assertEquals($t,$r){
+	if ($t == $r){
+		return "true";
 	}
 	else{
-		throw new Exception("expected:<".$test."> but was:<".$result.">");
+		throw new Exception("expected:<".$r."> but was:<".$t.">");
 	}
 }
-$a = $_GET['a'];
-$b = $_GET['b'];
-try {
-    assertEquals($a,$b);
-    echo "pass";
-} catch (Exception $e) {
-    echo $e->getMessage(), "\n";
+$script = $_POST['solution'];
+$test = $_POST['tests'];
+if (isset($script)){
+	eval($script);
+}
+try{
+	echo eval("return ".$test);
+}
+catch (Exception $e) {
+	echo $e->getMessage();
 }
 ?>
