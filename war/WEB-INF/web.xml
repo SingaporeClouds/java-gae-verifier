@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
 	<servlet>
 		<servlet-name>JavaVerifier</servlet-name>
 		<servlet-class>com.singpath.verifier.JavaVerifierServlet</servlet-class>
@@ -27,6 +27,28 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>ruby</servlet-name>
 		<url-pattern>/ruby</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>Quercus Servlet</servlet-name>
+		<servlet-class>com.caucho.quercus.servlet.QuercusServlet</servlet-class>
+		<init-param>
+			<param-name>ini-file</param-name>
+			<param-value>WEB-INF/php.ini</param-value>
+			<param-name>compile</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Quercus Servlet</servlet-name>
+		<url-pattern>*.php</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>PHP</servlet-name>
+		<servlet-class>com.singpath.verifier.PHPVerifierServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PHP</servlet-name>
+		<url-pattern>/php</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
