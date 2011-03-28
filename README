@@ -1,2 +1,8 @@
-python-gae-verifier is a programming language                                                                                              
-verifier for Java, Ruby, Javascript used by Singpath.com
+java-gae-verifier is a programming language                                                                                              
+verifier for PHP, Java, Ruby, Javascript used by Singpath.com
+
+New Version PHP verifier README:
+1. JSON request and response are handled by script.php file.
+2. class definition not supported by php eval() function.
+3. TODO: make use of phpunit and safer eval if possible.
+4. Feel free to correct my mistakes. :)
