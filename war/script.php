@@ -1,9 +1,9 @@
 <?php
 error_reporting(E_ALL);
 require_once 'JSON.php';
-//TODO: make use of safer eval and phpunit.
+//TODO: code clean up, add class support.
 function assert_equal($t,$r){
-	if ($t == $r){
+	if ($t === $r){
 		return "true";
 	}
 	else{
