@@ -7,5 +7,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bsh-2.0b4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/junit-4.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/js.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jsptest-fork-0.0.1-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-1.2.16.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

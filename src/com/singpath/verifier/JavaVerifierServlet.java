@@ -65,7 +65,7 @@ public class JavaVerifierServlet extends HttpServlet {
 
 	}
 
-	public HashMap<String, String> getTests(String s) throws Exception
+	private HashMap<String, String> getTests(String s) throws Exception
 	{
 		HashMap<String, String> tests = new HashMap<String, String>();
 		String[] test = s.split(">>>");
@@ -80,7 +80,7 @@ public class JavaVerifierServlet extends HttpServlet {
 		return tests;
 	}
 
-	public String readJSONString(HttpServletRequest request){
+	private String readJSONString(HttpServletRequest request){
 		StringBuffer json = new StringBuffer();
 		String line = null;
 		try {
@@ -95,7 +95,7 @@ public class JavaVerifierServlet extends HttpServlet {
 		return json.toString();
 	}
 
-	public String parseJava(String script, String tests) throws Exception
+	private String parseJava(String script, String tests) throws Exception
 	{
 		StringBuffer strResult = new StringBuffer();
 		ByteArrayOutputStream outputBuffer = new ByteArrayOutputStream();

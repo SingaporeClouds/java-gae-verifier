@@ -21,6 +21,14 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/javascript</url-pattern>
 	</servlet-mapping>
 	<servlet>
+		<servlet-name>jsp</servlet-name>
+		<servlet-class>com.singpath.verifier.JSPVerifierServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jsp</servlet-name>
+		<url-pattern>/jsp</url-pattern>
+	</servlet-mapping>
+	<servlet>
 		<servlet-name>ruby</servlet-name>
 		<servlet-class>com.singpath.verifier.RubyVerifierServlet</servlet-class>
 	</servlet>
