@@ -44,17 +44,16 @@
         jsonrequest:<br><textarea name="jsonrequest" rows="10" cols="50">
 {
 "solution": "b=2", 
-"tests": "assert_equal(2, b) \n assert_equal(2, b)", 
+"tests": "assert_equal(2, b) \n assert_equal(3, b)", 
 "examples": "examples"
 }
         </textarea> <br>
         <input type="submit" value="Submit" />
 
     </form>
-	<br><a href="info.php">info.php</a>
 	
 	<div id = "footer">
-	<font color="red">
+	<font color="black">
 	Contribute to Singpath. Contact PivotalExpert at gmail dot com
 	</font>
 	</div>
