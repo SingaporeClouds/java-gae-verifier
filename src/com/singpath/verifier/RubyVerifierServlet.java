@@ -32,36 +32,27 @@ public class RubyVerifierServlet extends HttpServlet{
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		/*
-		RubyVerifierServlet instance = new RubyVerifierServlet();
-		try
-		{
-			System.out.println(instance.parseRuby("puts \"Howdy!\"\na=1\nb=2\n", "org.junit.Assert.assertEquals(a,2)\norg.junit.Assert.assertEquals(b,2)"));
-		}
-		catch(Exception e)
-		{
-			System.out.println(e.getMessage());
-		}
 
-		*/
 		ScriptEngine jruby = new ScriptEngineManager().getEngineByName("jruby");
 		try
 		{
 			jruby.eval("require 'test/unit'\nputs \"Howdy!\"\na=1\nputs a\nassert_equal(a,1)");
-			//System.out.println(jruby.getBindings(ScriptContext.ENGINE_SCOPE).get("a"));
 		}
 		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
 
-
 	}
-
+	
+	public void doGet(HttpServletRequest req, HttpServletResponse resp) 
+	throws IOException{
+		doPost(req, resp);
+	}
+	
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 	throws IOException{
-		//String script = req.getParameter("script");
-		//String tests = req.getParameter("tests");
+
 		String userStr = req.getParameter("jsonrequest");
 		String script = null;
 		String tests = null;
@@ -113,8 +104,6 @@ public class RubyVerifierServlet extends HttpServlet{
 		RubyInstanceConfig config = new RubyInstanceConfig();
 		config.setOutput(bufferedOut);
 		config.setError(bufferedOut);
-		//config.setOutput(System.out);
-		//config.setError(System.out);
 
 		Ruby runtime = JavaEmbedUtils.initialize(new ArrayList(), config);
 		RubyRuntimeAdapter evaler = JavaEmbedUtils.newRuntimeAdapter();
@@ -134,11 +123,10 @@ public class RubyVerifierServlet extends HttpServlet{
 				continue;
 			try
 			{
-				//evaler.eval(runtime, "include Java\n" + script + "\n" + testscript);
+
 				String theCode = script+"\n\n";
 				theCode += "require 'test/unit'\n";
 				theCode += "extend Test::Unit::Assertions \n";
-				//theCode += "assert_equal(5, 5)\n";
 				theCode += testscript+"\n";
 
 				System.out.println("Will execute this code.");
@@ -149,23 +137,28 @@ public class RubyVerifierServlet extends HttpServlet{
 			}
 			catch(Throwable e)
 			{
-				System.out.println("Error caught");
-								System.out.println(e.getMessage());
+				logger.info("Error caught");
+				logger.info(e.getMessage());
 				HashMap<String, Object> resulthash = new HashMap<String, Object>();
 				solved = false;
 
-
-				//String failS = e.getMessage();
-				//failS = failS.substring(failS.indexOf("expected"));
-				//failS = failS.substring(0, failS.indexOf(";"));
-				//failS = failS.replace("expected:<", "");
-				//failS = failS.replace("> but was:<", ",");
-				//failS = failS.replace(">", "");
-				//String[] ss = failS.split(",");
-				resulthash.put("expected", "");
-				//resulthash.put("received", ss[1]);
-				resulthash.put("received", e.getMessage());
-								resulthash.put("call", testscript);
+				String result = e.getMessage(); //"<5> expected but was <3>.";
+				String[] parts = result.split("expected but was");
+				String expected = "Default";
+				String received = e.getMessage();
+				
+                if (parts.length > 1) {
+   
+                	expected = parts[0];
+                    expected = expected.substring(1,expected.length()-2);
+                    
+                    received = parts[1];
+                    received = received.substring(2, received.length()-2);
+                }
+				
+				resulthash.put("expected", expected);
+				resulthash.put("received", received);
+				resulthash.put("call", testscript);
 				resulthash.put("correct", false);
 				testResults.add(new JSONObject(resulthash));
 
@@ -173,9 +166,6 @@ public class RubyVerifierServlet extends HttpServlet{
 			}
 			System.out.println("No error thrown for "+testscript);
 			HashMap<String, Object> resulthash = new HashMap<String, Object>();
-			//resulthash.put("expected", value);
-			//resulthash.put("received", valueincode);
-			//resulthash.put("call", key);
 			resulthash.put("call", testscript);
 			resulthash.put("correct", true);
 			testResults.add(new JSONObject(resulthash));
@@ -186,7 +176,6 @@ public class RubyVerifierServlet extends HttpServlet{
 		resultjson.put("printed", buf);
 		JSONObject json = new JSONObject(resultjson);
 		strResult.append(json.toString());
-
 
 		return strResult.toString();
 	}

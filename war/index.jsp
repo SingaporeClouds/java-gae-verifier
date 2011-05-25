@@ -19,7 +19,11 @@
         This form submits the contents of the text box as the jsonrequest to the verifier. <br>
         The test should be in the format: <br>
 
-        {"solution": solution, "tests": tests, "examples": examples}
+ {
+"solution": "b=2", 
+"tests": "assert_equal(2, b)", 
+"examples": "examples"
+} 
         
     <form id ="test_form" name="test_form" action="/javascript" method="post" >
     	Select the language before you do the test.
