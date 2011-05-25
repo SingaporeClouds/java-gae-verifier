@@ -11,15 +11,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>wgx731 Verifier Test</title>
+        <title>Java-based Verifier Test</title>
     </head>
     <body>
-        <h1>wgx731 Verifier Test</h1>
+        <h1>Java-based Verifier Test</h1>
 
         This form submits the contents of the text box as the jsonrequest to the verifier. <br>
         The test should be in the format: <br>
 
- {
+{
 "solution": "b=2", 
 "tests": "assert_equal(2, b)", 
 "examples": "examples"
@@ -42,7 +42,11 @@
 		<br>
 
         jsonrequest:<br><textarea name="jsonrequest" rows="10" cols="50">
-{"solution": solution, "tests": tests, "examples": examples} 
+{
+"solution": "b=2", 
+"tests": "assert_equal(2, b) \n assert_equal(2, b)", 
+"examples": "examples"
+}
         </textarea> <br>
         <input type="submit" value="Submit" />
 
@@ -51,7 +55,7 @@
 	
 	<div id = "footer">
 	<font color="red">
-	Developer:wgx731 follow me @wgx731
+	Contribute to Singpath. Contact PivotalExpert at gmail dot com
 	</font>
 	</div>
     </body>
