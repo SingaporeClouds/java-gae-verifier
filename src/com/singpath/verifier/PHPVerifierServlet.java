@@ -62,7 +62,7 @@ public class PHPVerifierServlet extends HttpServlet {
 					testscript.indexOf(")"));
 			//System.out.println(a+"..."+b);
 			//String result = Resultreader.read("http://localhost:8888/script.php?a=" + a + "&b=" + b);
-			String result = Resultreader.read("http://wgx731lotrepls.appspot.com/script.php?a=" + a + "&b=" + b);		
+			String result = Resultreader.read("http://wgx731lotrepls.appspot.com/script.php?a=" + a + "&b=" + b);
 			System.out.println(result);
 			if (result.equals("pass")) {
 				HashMap<String, Object> resulthash = new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class PHPVerifierServlet extends HttpServlet {
 				.println("Caught an error for test " + testscript);
 				HashMap<String, Object> resulthash = new HashMap<String, Object>();
 				solved = false;
-				
+
 				String failS = result;
 				failS = failS.replace("expected:<", "");
 				failS = failS.replace("> but was:<", "MYSPLIT");
@@ -88,7 +88,7 @@ public class PHPVerifierServlet extends HttpServlet {
 				resulthash.put("call", testscript);
 				resulthash.put("correct", false);
 				testResults.add(new JSONObject(resulthash));
-				
+
 				continue;
 			}
 			if (testscript.indexOf("assert") == -1)

@@ -168,16 +168,16 @@ public class NativeJavaMethod extends BaseFunction
 
         MemberBox meth = methods[index];
         Class<?>[] argTypes = meth.argTypes;
-      
+
         if (meth.vararg) {
             // marshall the explicit parameters
             Object[] newArgs = new Object[argTypes.length];
             for (int i = 0; i < argTypes.length-1; i++) {
                 newArgs[i] = Context.jsToJava(args[i], argTypes[i]);
             }
-            
+
             Object varArgs;
-            
+
             // Handle special situation where a single variable parameter
             // is given and it is a Java or ECMA array or is null.
             if (args.length == argTypes.length &&
@@ -186,26 +186,26 @@ public class NativeJavaMethod extends BaseFunction
                  args[args.length-1] instanceof NativeJavaArray))
             {
                 // convert the ECMA array into a native array
-                varArgs = Context.jsToJava(args[args.length-1], 
+                varArgs = Context.jsToJava(args[args.length-1],
                                            argTypes[argTypes.length - 1]);
-            } else {            
+            } else {
                 // marshall the variable parameters
                 Class<?> componentType = argTypes[argTypes.length - 1].
                                          getComponentType();
-                varArgs = Array.newInstance(componentType, 
-                                            args.length - argTypes.length + 1);            
+                varArgs = Array.newInstance(componentType,
+                                            args.length - argTypes.length + 1);
                 for (int i = 0; i < Array.getLength(varArgs); i++) {
-                    Object value = Context.jsToJava(args[argTypes.length-1 + i], 
+                    Object value = Context.jsToJava(args[argTypes.length-1 + i],
                                                     componentType);
                     Array.set(varArgs, i, value);
                 }
             }
-            
+
             // add varargs
             newArgs[argTypes.length-1] = varArgs;
             // replace the original args with the new one
             args = newArgs;
-        } else {  
+        } else {
             // First, we marshall the args.
             Object[] origArgs = args;
             for (int i = 0; i < args.length; i++) {
@@ -284,7 +284,7 @@ public class NativeJavaMethod extends BaseFunction
             MemberBox member = methodsOrCtors[0];
             Class<?>[] argTypes = member.argTypes;
             int alength = argTypes.length;
-            
+
             if (member.vararg) {
                 alength--;
                 if ( alength > args.length) {
@@ -478,7 +478,7 @@ public class NativeJavaMethod extends BaseFunction
      * Returns one of PREFERENCE_EQUAL, PREFERENCE_FIRST_ARG,
      * PREFERENCE_SECOND_ARG, or PREFERENCE_AMBIGUOUS.
      */
-    private static int preferSignature(Object[] args, 
+    private static int preferSignature(Object[] args,
                                        Class<?>[] sig1,
                                        boolean vararg1,
                                        Class<?>[] sig2,
@@ -497,17 +497,17 @@ public class NativeJavaMethod extends BaseFunction
         } else if (vararg1 && vararg2) {
             if (sig1.length < sig2.length) {
                 // prefer the signature with more explicit types
-                return PREFERENCE_SECOND_ARG;                
+                return PREFERENCE_SECOND_ARG;
             } else if (sig1.length > sig2.length) {
                 // prefer the signature with more explicit types
-                return PREFERENCE_FIRST_ARG;                
+                return PREFERENCE_FIRST_ARG;
             } else {
                 // Both are varargs and have the same length, so make the
-                // decision with the explicit args. 
+                // decision with the explicit args.
                 alength = Math.min(args.length, sig1.length-1);
             }
         }
-        
+
         int totalPreference = 0;
         for (int j = 0; j < alength; j++) {
             Class<?> type1 = sig1[j];

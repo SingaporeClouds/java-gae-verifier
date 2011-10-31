@@ -520,7 +520,7 @@ public class Interpreter implements Evaluator
     public void setEvalScriptFlag(Script script) {
         ((InterpretedFunction)script).idata.evalScriptFlag = true;
     }
-    
+
 
     public Function createFunctionObject(Context cx, Scriptable scope,
             Object bytecode, Object staticSecurityDomain)
@@ -1545,7 +1545,7 @@ public class Interpreter implements Evaluator
         }
         stackChange(-1);
     }
-    
+
     private void visitArrayComprehension(Node node, Node initStmt, Node expr)
     {
         // A bit of a hack: array comprehensions are implemented using
@@ -2405,7 +2405,7 @@ public class Interpreter implements Evaluator
         if (ex.interpreterStackInfo == null) {
             return null;
         }
-        
+
         List<String> list = new ArrayList<String>();
         String lineSeparator =
                 SecurityUtilities.getSystemProperty("line.separator");
@@ -2442,7 +2442,7 @@ public class Interpreter implements Evaluator
         }
         return list;
     }
-        
+
     static String getEncodedSource(InterpreterData idata)
     {
         if (idata.encodedSource == null) {
@@ -2651,7 +2651,7 @@ switch (op) {
           frame.pc--; // we want to come back here when we resume
           CallFrame generatorFrame = captureFrameForGenerator(frame);
           generatorFrame.frozen = true;
-          NativeGenerator generator = new NativeGenerator(frame.scope, 
+          NativeGenerator generator = new NativeGenerator(frame.scope,
               generatorFrame.fnOrScript, generatorFrame);
           frame.result = generator;
           break Loop;
@@ -3290,7 +3290,7 @@ switch (op) {
                         frame.parentFrame, false);
                 continue Loop;
             }
-            // Bug 405654 -- make best effort to keep Function.apply and 
+            // Bug 405654 -- make best effort to keep Function.apply and
             // Function.call within this interpreter loop invocation
             if (BaseFunction.isApplyOrCall(ifun)) {
                 Callable applyCallable = ScriptRuntime.getCallable(funThisObj);
@@ -3306,7 +3306,7 @@ switch (op) {
             }
         }
 
-        // Bug 447697 -- make best effort to keep __noSuchMethod__ within this  
+        // Bug 447697 -- make best effort to keep __noSuchMethod__ within this
         // interpreter loop invocation
         if (fun instanceof NoSuchMethodShim) {
             // get the shim and the actual method
@@ -3327,7 +3327,7 @@ switch (op) {
         cx.lastInterpreterFrame = frame;
         frame.savedCallOp = op;
         frame.savedStackTop = stackTop;
-        stack[stackTop] = fun.call(cx, calleeScope, funThisObj, 
+        stack[stackTop] = fun.call(cx, calleeScope, funThisObj,
                 getArgsArray(stack, sDbl, stackTop + 2, indexReg));
         cx.lastInterpreterFrame = null;
 
@@ -3562,9 +3562,9 @@ switch (op) {
         if (lhs == DBL_MRK) lhs = ScriptRuntime.wrapNumber(sDbl[stackTop]);
         --stackTop;
         indexReg += frame.localShift;
-        int enumType = op == Token.ENUM_INIT_KEYS 
+        int enumType = op == Token.ENUM_INIT_KEYS
                          ? ScriptRuntime.ENUMERATE_KEYS :
-                       op == Token.ENUM_INIT_VALUES 
+                       op == Token.ENUM_INIT_VALUES
                          ? ScriptRuntime.ENUMERATE_VALUES :
                        ScriptRuntime.ENUMERATE_ARRAY;
         stack[indexReg] = ScriptRuntime.enumInit(lhs, cx, enumType);
@@ -3882,7 +3882,7 @@ switch (op) {
                 generatorState.operation == NativeGenerator.GENERATOR_CLOSE &&
                 throwable == generatorState.value)
             {
-                exState = EX_FINALLY_STATE;            	
+                exState = EX_FINALLY_STATE;
             } else if (throwable instanceof JavaScriptException) {
                 exState = EX_CATCH_STATE;
             } else if (throwable instanceof EcmaError) {
@@ -4036,7 +4036,7 @@ switch (op) {
         argsArray = new Object[2];
         argsArray[0] = noSuchMethodShim.methodName;
         argsArray[1] = cx.newArray(calleeScope, elements);
-        
+
         // exactly the same as if it's a regular InterpretedFunction
         CallFrame callParentFrame = frame;
         CallFrame calleeFrame = new CallFrame();
@@ -4044,7 +4044,7 @@ switch (op) {
             callParentFrame = frame.parentFrame;
             exitFrame(cx, frame, null);
         }
-        // init the frame with the underlying method with the 
+        // init the frame with the underlying method with the
         // adjusted args array and shim's function
         initFrame(cx, calleeScope, funThisObj, argsArray, null,
           0, 2, ifun, callParentFrame, calleeFrame);
@@ -4054,7 +4054,7 @@ switch (op) {
         }
         return calleeFrame;
     }
-    
+
     private static boolean shallowEquals(Object[] stack, double[] sDbl,
             int stackTop)
     {
@@ -4101,7 +4101,7 @@ switch (op) {
                 // XXX Deal with exceptios!!!
                 frame = frame.cloneFrozen();
             }
-            
+
             int[] table = frame.idata.itsExceptionTable;
 
             frame.pc = table[indexReg + EXCEPTION_HANDLER_SLOT];
@@ -4255,9 +4255,9 @@ switch (op) {
         }
         CallFrame calleeFrame = new CallFrame();
         if(BaseFunction.isApply(ifun)) {
-            Object[] callArgs = indexReg < 2 ? ScriptRuntime.emptyArgs : 
+            Object[] callArgs = indexReg < 2 ? ScriptRuntime.emptyArgs :
                 ScriptRuntime.getApplyArguments(cx, stack[stackTop + 3]);
-            initFrame(cx, calleeScope, applyThis, callArgs, null, 0, 
+            initFrame(cx, calleeScope, applyThis, callArgs, null, 0,
                     callArgs.length, iApplyCallable, frame, calleeFrame);
         }
         else {
@@ -4267,10 +4267,10 @@ switch (op) {
                 sDbl[stackTop + 1 + i] = sDbl[stackTop + 2 + i];
             }
             int argCount = indexReg < 2 ? 0 : indexReg - 1;
-            initFrame(cx, calleeScope, applyThis, stack, sDbl, stackTop + 2, 
+            initFrame(cx, calleeScope, applyThis, stack, sDbl, stackTop + 2,
                     argCount, iApplyCallable, frame, calleeFrame);
         }
-        
+
         frame = calleeFrame;
         return frame;
     }
@@ -4438,32 +4438,32 @@ switch (op) {
         return frame.debuggerFrame != null || frame.idata.itsNeedsActivation;
     }
 
-    private static void enterFrame(Context cx, CallFrame frame, Object[] args, 
+    private static void enterFrame(Context cx, CallFrame frame, Object[] args,
                                    boolean continuationRestart)
     {
-        boolean usesActivation = frame.idata.itsNeedsActivation; 
+        boolean usesActivation = frame.idata.itsNeedsActivation;
         boolean isDebugged = frame.debuggerFrame != null;
         if(usesActivation || isDebugged) {
             Scriptable scope = frame.scope;
             if(scope == null) {
                 Kit.codeBug();
             } else if (continuationRestart) {
-                // Walk the parent chain of frame.scope until a NativeCall is 
-                // found. Normally, frame.scope is a NativeCall when called 
-                // from initFrame() for a debugged or activatable function. 
+                // Walk the parent chain of frame.scope until a NativeCall is
+                // found. Normally, frame.scope is a NativeCall when called
+                // from initFrame() for a debugged or activatable function.
                 // However, when called from interpretLoop() as part of
-                // restarting a continuation, it can also be a NativeWith if 
-                // the continuation was captured within a "with" or "catch" 
-                // block ("catch" implicitly uses NativeWith to create a scope 
+                // restarting a continuation, it can also be a NativeWith if
+                // the continuation was captured within a "with" or "catch"
+                // block ("catch" implicitly uses NativeWith to create a scope
                 // to expose the exception variable).
                 for(;;) {
                     if(scope instanceof NativeWith) {
                         scope = scope.getParentScope();
-                        if (scope == null || (frame.parentFrame != null && 
+                        if (scope == null || (frame.parentFrame != null &&
                                               frame.parentFrame.scope == scope))
                         {
-                            // If we get here, we didn't find a NativeCall in 
-                            // the call chain before reaching parent frame's 
+                            // If we get here, we didn't find a NativeCall in
+                            // the call chain before reaching parent frame's
                             // scope. This should not be possible.
                             Kit.codeBug();
                             break; // Never reached, but keeps the static analyzer happy about "scope" not being null 5 lines above.
@@ -4477,8 +4477,8 @@ switch (op) {
             if (isDebugged) {
                 frame.debuggerFrame.onEnter(cx, scope, frame.thisObj, args);
             }
-            // Enter activation only when itsNeedsActivation true, 
-            // since debugger should not interfere with activation 
+            // Enter activation only when itsNeedsActivation true,
+            // since debugger should not interfere with activation
             // chaining
             if (usesActivation) {
                 ScriptRuntime.enterActivationFunction(cx, scope);
@@ -4543,7 +4543,7 @@ switch (op) {
         }
         frame.savedCallOp = 0;
     }
-    
+
     public static NativeContinuation captureContinuation(Context cx) {
         if (cx.lastInterpreterFrame == null ||
             !(cx.lastInterpreterFrame instanceof CallFrame))
@@ -4583,11 +4583,11 @@ switch (op) {
             outermost = x;
             x = x.parentFrame;
         }
-        
+
         if (requireContinuationsTopFrame) {
             while (outermost.parentFrame != null)
                 outermost = outermost.parentFrame;
-    
+
             if (!outermost.isContinuationsTopFrame) {
                 throw new IllegalStateException("Cannot capture continuation " +
                         "from JavaScript code not called directly by " +
@@ -4595,7 +4595,7 @@ switch (op) {
                         "callFunctionWithContinuations");
             }
         }
-        
+
         c.initImplementation(frame);
         return c;
     }

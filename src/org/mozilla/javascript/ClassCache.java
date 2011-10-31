@@ -153,7 +153,7 @@ public class ClassCache implements Serializable
             clearCaches();
         cachingIsEnabled = enabled;
     }
-    
+
     /**
      * @return a map from classes to associated JavaMembers objects
      */
@@ -163,7 +163,7 @@ public class ClassCache implements Serializable
         }
         return classTable;
     }
-    
+
     Map<JavaAdapter.JavaAdapterSignature,Class<?>> getInterfaceAdapterCacheMap()
     {
         if (classAdapterCache == null) {
@@ -171,7 +171,7 @@ public class ClassCache implements Serializable
         }
         return classAdapterCache;
     }
-    
+
     /**
      * @deprecated
      * The method always returns false.
@@ -206,8 +206,8 @@ public class ClassCache implements Serializable
 
     Object getInterfaceAdapter(Class<?> cl)
     {
-        return interfaceAdapterCache == null 
-                    ? null 
+        return interfaceAdapterCache == null
+                    ? null
                     : interfaceAdapterCache.get(cl);
     }
 

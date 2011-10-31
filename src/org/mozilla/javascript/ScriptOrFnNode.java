@@ -121,7 +121,7 @@ public class ScriptOrFnNode extends Node.Scope {
     public int getIndexForNameNode(Node nameNode) {
         if (variableNames == null) throw Kit.codeBug();
         Node.Scope node = nameNode.getScope();
-        Symbol symbol = node == null ? null 
+        Symbol symbol = node == null ? null
                                      : node.getSymbol(nameNode.getString());
         if (symbol == null)
             return -1;
@@ -161,9 +161,9 @@ public class ScriptOrFnNode extends Node.Scope {
     }
 
     /**
-     * Assign every symbol a unique integer index. Generate arrays of variable 
+     * Assign every symbol a unique integer index. Generate arrays of variable
      * names and constness that can be indexed by those indices.
-     * 
+     *
      * @param flattenAllTables if true, flatten all symbol tables, included
      * nested block scope symbol tables. If false, just flatten the script's
      * or function's symbol table.
@@ -206,7 +206,7 @@ public class ScriptOrFnNode extends Node.Scope {
         if (compilerData != null) throw new IllegalStateException();
         compilerData = data;
     }
-    
+
     public String getNextTempName()
     {
         return "$" + tempNumber++;
@@ -219,7 +219,7 @@ public class ScriptOrFnNode extends Node.Scope {
 
     private ObjArray functions;
     private ObjArray regexps;
-    
+
     private ArrayList<Symbol> symbols;
     private int paramCount = 0;
     private String[] variableNames;

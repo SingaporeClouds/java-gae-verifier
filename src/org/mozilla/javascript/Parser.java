@@ -99,7 +99,7 @@ public class Parser
     private ObjArray loopAndSwitchSet;
     private int endFlags;
 // end of per function variables
-    
+
     public int getCurrentLineNumber() {
         return ts.getLineno();
     }
@@ -268,14 +268,14 @@ public class Parser
     {
         return nestingOfFunction != 0;
     }
-    
+
     void pushScope(Node node) {
         Node.Scope scopeNode = (Node.Scope) node;
         if (scopeNode.getParentScope() != null) throw Kit.codeBug();
         scopeNode.setParent(currentScope);
         currentScope = scopeNode;
     }
-    
+
     void popScope() {
         currentScope = currentScope.getParentScope();
     }
@@ -512,9 +512,9 @@ public class Parser
 
         if (memberExprNode != null) {
             syntheticType = FunctionNode.FUNCTION_EXPRESSION;
-        } 
-        
-        if (syntheticType != FunctionNode.FUNCTION_EXPRESSION && 
+        }
+
+        if (syntheticType != FunctionNode.FUNCTION_EXPRESSION &&
             name.length() > 0)
         {
             // Function statements define a symbol in the enclosing scope
@@ -563,7 +563,7 @@ public class Parser
                     first = false;
                     int tt = peekToken();
                     if (tt == Token.LB || tt == Token.LC) {
-                        // Destructuring assignment for parameters: add a 
+                        // Destructuring assignment for parameters: add a
                         // dummy parameter name, and add a statement to the
                         // body to initialize variables from the destructuring
                         // assignment
@@ -602,15 +602,15 @@ public class Parser
                                              : "msg.anon.no.return.value";
               addStrictWarning(msg, name);
             }
-            
+
             if (syntheticType == FunctionNode.FUNCTION_EXPRESSION &&
-                name.length() > 0 && currentScope.getSymbol(name) == null) 
+                name.length() > 0 && currentScope.getSymbol(name) == null)
             {
-                // Function expressions define a name only in the body of the 
+                // Function expressions define a name only in the body of the
                 // function, and only if not hidden by a parameter name
                 defineSymbol(Token.FUNCTION, false, name);
             }
-            
+
             decompiler.addToken(Token.RC);
             functionSourceEnd = decompiler.markFunctionEnd(functionSourceStart);
             if (functionType != FunctionNode.FUNCTION_EXPRESSION) {
@@ -1108,7 +1108,7 @@ public class Parser
             pn = variables(false, tt);
             break;
           }
-          
+
           case Token.LET: {
             consumeToken();
             decompiler.addToken(Token.LET);
@@ -1122,7 +1122,7 @@ public class Parser
             }
           }
 
-          case Token.RETURN: 
+          case Token.RETURN:
           case Token.YIELD: {
             pn = returnOrYield(tt, false);
             break;
@@ -1277,14 +1277,14 @@ public class Parser
      * @param before bits before change
      * @param after bits after change
      * @param mask mask for bits
-     * @return true if all the bits in the mask are set in "after" but not 
+     * @return true if all the bits in the mask are set in "after" but not
      *              "before"
      */
     private static final boolean nowAllSet(int before, int after, int mask)
     {
         return ((before & mask) != mask) && ((after & mask) == mask);
     }
-    
+
     private Node returnOrYield(int tt, boolean exprContext)
         throws IOException, ParserException
     {
@@ -1324,9 +1324,9 @@ public class Parser
                 endFlags |= Node.END_RETURNS_VALUE;
             }
             ret = nf.createReturn(e, lineno);
-            
+
             // see if we need a strict mode warning
-            if (nowAllSet(before, endFlags, 
+            if (nowAllSet(before, endFlags,
                           Node.END_RETURNS|Node.END_RETURNS_VALUE))
             {
                 addStrictWarning("msg.return.inconsistent", "");
@@ -1339,7 +1339,7 @@ public class Parser
         }
 
         // see if we are mixing yields and value returns.
-        if (nowAllSet(before, endFlags, 
+        if (nowAllSet(before, endFlags,
                       Node.END_YIELDS|Node.END_RETURNS_VALUE))
         {
             String name = ((FunctionNode)currentScriptOrFn).getFunctionName();
@@ -1379,21 +1379,21 @@ public class Parser
                 // Simple variable name
                 mustMatchToken(Token.NAME, "msg.bad.var");
                 s = ts.getString();
-    
+
                 if (!first)
                     decompiler.addToken(Token.COMMA);
                 first = false;
-    
+
                 decompiler.addName(s);
                 defineSymbol(declType, inFor, s);
             }
-    
+
             Node init = null;
             if (matchToken(Token.ASSIGN)) {
                 decompiler.addToken(Token.ASSIGN);
                 init = assignExpr(inFor);
             }
-    
+
             if (destructuring != null) {
                 if (init == null) {
                     if (!inFor)
@@ -1410,14 +1410,14 @@ public class Parser
                     nf.addChildToBack(name, init);
                 nf.addChildToBack(result, name);
             }
-    
+
             if (!matchToken(Token.COMMA))
                 break;
         }
         return result;
     }
 
-    
+
     private Node let(boolean isStatement)
         throws IOException, ParserException
     {
@@ -1451,10 +1451,10 @@ public class Parser
         }
         return result;
     }
-    
+
     void defineSymbol(int declType, boolean ignoreNotInBlock, String name) {
         Node.Scope definingScope = currentScope.getDefiningScope(name);
-        Node.Scope.Symbol symbol = definingScope != null 
+        Node.Scope.Symbol symbol = definingScope != null
                                   ? definingScope.getSymbol(name)
                                   : null;
         boolean error = false;
@@ -1469,16 +1469,16 @@ public class Parser
                     error = symbol.declType == Token.LET;
                 }
                 int currentScopeType = currentScope.getType();
-                if (!ignoreNotInBlock && 
+                if (!ignoreNotInBlock &&
                     ((currentScopeType == Token.LOOP) ||
                      (currentScopeType == Token.IF)))
                 {
                     addError("msg.let.decl.not.in.block");
                 }
-                currentScope.putSymbol(name, 
+                currentScope.putSymbol(name,
                     new Node.Scope.Symbol(declType, name));
                 break;
-                
+
               case Token.VAR:
               case Token.CONST:
               case Token.FUNCTION:
@@ -1489,21 +1489,21 @@ public class Parser
                         addStrictWarning("msg.var.hides.arg", name);
                     }
                 } else {
-                    currentScriptOrFn.putSymbol(name, 
+                    currentScriptOrFn.putSymbol(name,
                         new Node.Scope.Symbol(declType, name));
                 }
                 break;
-                
+
               case Token.LP:
                 if (symbol != null) {
-                    // must be duplicate parameter. Second parameter hides the 
+                    // must be duplicate parameter. Second parameter hides the
                     // first, so go ahead and add the second pararameter
                     addWarning("msg.dup.parms", name);
                 }
-                currentScriptOrFn.putSymbol(name, 
+                currentScriptOrFn.putSymbol(name,
                     new Node.Scope.Symbol(declType, name));
                 break;
-                
+
               default:
                 throw Kit.codeBug();
             }
@@ -1989,7 +1989,7 @@ public class Parser
 
                     tt = nextToken();
                     switch (tt) {
-                    
+
                       // needed for generator.throw();
                       case Token.THROW:
                         decompiler.addName("throw");
@@ -2169,7 +2169,7 @@ public class Parser
             name = currentScriptOrFn.getNextTempName();
             defineSymbol(Token.LP, false, name);
             expr = nf.createBinary(Token.COMMA,
-                nf.createAssignment(Token.ASSIGN, primaryExpr(), 
+                nf.createAssignment(Token.ASSIGN, primaryExpr(),
                                     nf.createName(name)),
                 expr);
         } else if (tt == Token.NAME) {
@@ -2185,13 +2185,13 @@ public class Parser
         // Define as a let since we want the scope of the variable to
         // be restricted to the array comprehension
         defineSymbol(Token.LET, false, name);
-        
+
         mustMatchToken(Token.IN, "msg.in.after.for.name");
         decompiler.addToken(Token.IN);
         Node iterator = expr(false);
         mustMatchToken(Token.RP, "msg.no.paren.for.ctrl");
         decompiler.addToken(Token.RP);
-        
+
         Node body;
         tt = peekToken();
         if (tt == Token.FOR) {
@@ -2221,7 +2221,7 @@ public class Parser
             exitLoop(false);
         }
     }
-    
+
     private Node primaryExpr()
         throws IOException, ParserException
     {
@@ -2256,18 +2256,18 @@ public class Parser
                 } else if (tt == Token.RB) {
                     consumeToken();
                     decompiler.addToken(Token.RB);
-                    // for ([a,] in obj) is legal, but for ([a] in obj) is 
+                    // for ([a,] in obj) is legal, but for ([a] in obj) is
                     // not since we have both key and value supplied. The
                     // trick is that [a,] and [a] are equivalent in other
                     // array literal contexts. So we calculate a special
                     // length value just for destructuring assignment.
-                    destructuringLen = elems.size() + 
+                    destructuringLen = elems.size() +
                                        (after_lb_or_comma ? 1 : 0);
                     break;
                 } else if (skipCount == 0 && elems.size() == 1 &&
                            tt == Token.FOR)
                 {
-                    Node scopeNode = nf.createScopeNode(Token.ARRAYCOMP, 
+                    Node scopeNode = nf.createScopeNode(Token.ARRAYCOMP,
                                                         ts.getLineno());
                     String tempName = currentScriptOrFn.getNextTempName();
                     pushScope(scopeNode);
@@ -2275,13 +2275,13 @@ public class Parser
                         defineSymbol(Token.LET, false, tempName);
                         Node expr = (Node) elems.get(0);
                         Node block = nf.createBlock(ts.getLineno());
-                        Node init = new Node(Token.EXPR_VOID, 
-                            nf.createAssignment(Token.ASSIGN, 
+                        Node init = new Node(Token.EXPR_VOID,
+                            nf.createAssignment(Token.ASSIGN,
                                 nf.createName(tempName),
                                 nf.createCallOrNew(Token.NEW,
                                     nf.createName("Array"))), ts.getLineno());
                         block.addChildToBack(init);
-                        block.addChildToBack(arrayComprehension(tempName, 
+                        block.addChildToBack(arrayComprehension(tempName,
                             expr));
                         scopeNode.addChildToBack(block);
                         scopeNode.addChildToBack(nf.createName(tempName));
@@ -2377,7 +2377,7 @@ public class Parser
             decompiler.addToken(Token.RC);
             return nf.createObjectLiteral(elems);
           }
-          
+
           case Token.LET:
             decompiler.addToken(Token.LET);
             return let(false);

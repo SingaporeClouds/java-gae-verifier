@@ -48,7 +48,7 @@ import java.lang.reflect.*;
  */
 public final class LazilyLoadedCtor implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
     private static final int STATE_BEFORE_INIT = 0;
     private static final int STATE_INITIALIZING = 1;
     private static final int STATE_WITH_VALUE = 2;
@@ -132,7 +132,7 @@ public final class LazilyLoadedCtor implements java.io.Serializable {
         }
         return Scriptable.NOT_FOUND;
     }
-    
+
     @SuppressWarnings({"unchecked"})
     private Class<? extends Scriptable> cast(Class<?> cl) {
         return (Class<? extends Scriptable>)cl;

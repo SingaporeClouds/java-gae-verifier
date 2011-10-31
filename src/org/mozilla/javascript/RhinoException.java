@@ -240,7 +240,7 @@ public abstract class RhinoException extends RuntimeException
      * Get a string representing the script stack of this exception.
      * If optimization is enabled, this corresponds to all java stack elements
      * with a source name matching the <code>filter</code>.
-     * @param filter the file name filter to determine whether a file is a 
+     * @param filter the file name filter to determine whether a file is a
      *               script file
      * @return a script stack dump
      * @since 1.6R6
@@ -268,7 +268,7 @@ public abstract class RhinoException extends RuntimeException
                 buffer.append(e.getLineNumber());
                 buffer.append(lineSeparator);
             } else if (interpreterStack != null &&
-                interpreterStack.size() > interpreterStackIndex && 
+                interpreterStack.size() > interpreterStackIndex &&
                 "org.mozilla.javascript.Interpreter".equals(e.getClassName()) &&
                 "interpretLoop".equals(e.getMethodName()))
             {
