@@ -26,12 +26,40 @@ import static org.junit.Assert.*;
 public class JavaVerifierServlet extends HttpServlet {
 	private Logger logger = Logger.getLogger(this.getClass().getName());
 
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
 	throws IOException{
-		this.doGet(req, resp);
+		String userStr = req.getParameter("jsonrequest");
+		String callBack = req.getParameter("callback");
+		logger.info("userStr:" + userStr);
+		//userStr = URLDecoder.decode(userStr, "UTF-8");
+		//mock a json test string
+
+		try
+		{
+			//HashMap hash = new HashMap();
+			//hash.put("tests", ">>> a \n 1\n>>> b\n2\n\n\n");
+			//hash.put("solution", "int a=1;\nint b=1;\n\n");
+			//JSONObject testObj = new JSONObject(hash);
+			//userStr = testObj.toString();
+			//resp.getWriter().println(userStr);
+			logger.info("userStr:" + userStr);
+			JSONObject jsonObj = new JSONObject(userStr);
+			resp.getWriter().println(callBack+"("+parseJava(jsonObj.getString("solution"), jsonObj.getString("tests"))+")");
+
+		}
+		catch(Exception e)
+		{
+			logger.info("error in doGet: " + e);
+			HashMap<String, String> em = new HashMap<String, String>();
+			em.put("errors", e.toString());
+			resp.getWriter().println(callBack+"("+new JSONObject(em).toString()+")");
+		}
+
+		resp.setContentType("application/json");
+		
 	}
 
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		String userStr = req.getParameter("jsonrequest");
 

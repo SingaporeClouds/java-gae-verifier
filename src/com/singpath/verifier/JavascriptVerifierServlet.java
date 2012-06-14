@@ -79,7 +79,41 @@ public class JavascriptVerifierServlet extends HttpServlet {
 		}
 	}
 
+	public void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException{
+				//String script = req.getParameter("script");
+				//String tests = req.getParameter("tests");
+				String userStr = req.getParameter("jsonrequest");
+				String callBack = req.getParameter("callback");
+				String script = null;
+				String tests = null;
 
+
+				try
+				{
+					if(userStr != null)
+					{
+						JSONObject jsonObj = new JSONObject(userStr);
+
+						script = jsonObj.getString("solution");
+						tests = jsonObj.getString("tests");
+					}
+					else
+					{
+						script = req.getParameter("script");
+						tests = req.getParameter("tests");
+					}
+
+					resp.getWriter().println(callBack+"("+this.parseJs(script, tests)+")");
+				}
+				catch(Throwable e)
+				{
+					logger.info("error in doPost:" + e);
+					HashMap<String, String> em = new HashMap<String, String>();
+					em.put("errors", e.toString());
+					resp.getWriter().println(callBack+"(" + new JSONObject(em).toString() +")");
+				}
+			}
 
 	public String parseJs(String script, String tests) throws Throwable
 	{
