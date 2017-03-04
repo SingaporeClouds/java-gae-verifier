@@ -214,7 +214,7 @@ final class IRFactory
         checkActivationName(name, Token.NAME);
         return Node.newString(Token.NAME, name);
     }
-    
+
     private Node createName(int type, String name, Node child)
     {
         Node result = createName(name);
@@ -282,7 +282,7 @@ final class IRFactory
     {
         return new Node(Token.DEBUGGER,  lineno);
     }
-  
+
     /**
      * Label
      */
@@ -414,7 +414,7 @@ final class IRFactory
     /**
      * Create a node that can be used to hold lexically scoped variable
      * definitions (via let declarations).
-     * 
+     *
      * @param token the token of the node to create
      * @param lineno line number of source
      * @return the created node
@@ -461,7 +461,7 @@ final class IRFactory
     Node createFor(Node loop, Node init, Node test, Node incr, Node body)
     {
         if (init.getType() == Token.LET) {
-            // rewrite "for (let i=s; i < N; i++)..." as 
+            // rewrite "for (let i=s; i < N; i++)..." as
             // "let (i=s) { for (; i < N; i++)..." so that "s" is evaluated
             // outside the scope of the for.
             Node.Scope let = Node.Scope.splitScope((Node.Scope)loop);
@@ -1317,7 +1317,7 @@ final class IRFactory
     {
         Node ref = makeReference(left);
         if (ref == null) {
-            if (left.getType() == Token.ARRAYLIT || 
+            if (left.getType() == Token.ARRAYLIT ||
                 left.getType() == Token.OBJECTLIT)
             {
                 if (assignType != Token.ASSIGN) {
@@ -1380,7 +1380,7 @@ final class IRFactory
 
         throw Kit.codeBug();
     }
-    
+
     /**
      * Given a destructuring assignment with a left hand side parsed
      * as an array or object literal and a right hand side expression,
@@ -1403,7 +1403,7 @@ final class IRFactory
         return result;
     }
 
-    private Node destructuringAssignmentHelper(int variableType, Node left, 
+    private Node destructuringAssignmentHelper(int variableType, Node left,
                                                Node right, String tempName)
     {
         Node result = createScopeNode(Token.LETEXPR,
@@ -1430,7 +1430,7 @@ final class IRFactory
             Node n = left.getFirstChild();
             for (;;) {
                 if (skipIndices != null) {
-                    while (skip < skipIndices.length && 
+                    while (skip < skipIndices.length &&
                            skipIndices[skip] == index) {
                         skip++;
                         index++;
@@ -1439,11 +1439,11 @@ final class IRFactory
                 if (n == null)
                     break;
                 Node rightElem = new Node(Token.GETELEM,
-                    createName(tempName), 
+                    createName(tempName),
                     createNumber(index));
                 if (n.getType() == Token.NAME) {
                     String name = n.getString();
-                    comma.addChildToBack(new Node(setOp, 
+                    comma.addChildToBack(new Node(setOp,
                         createName(Token.BINDNAME, name, null),
                         rightElem));
                     if (variableType != -1) {
@@ -1467,16 +1467,16 @@ final class IRFactory
             for (Node n = left.getFirstChild(); n != null; n = n.getNext())
             {
                 Object id = propertyIds[index];
-                Node rightElem = id instanceof String 
+                Node rightElem = id instanceof String
                     ? new Node(Token.GETPROP,
-                        createName(tempName), 
+                        createName(tempName),
                         createString((String)id))
                     : new Node(Token.GETELEM,
-                        createName(tempName), 
+                        createName(tempName),
                         createNumber(((Number)id).intValue()));
                 if (n.getType() == Token.NAME) {
                     String name = n.getString();
-                    comma.addChildToBack(new Node(setOp, 
+                    comma.addChildToBack(new Node(setOp,
                         createName(Token.BINDNAME, name, null),
                         rightElem));
                     if (variableType != -1) {
@@ -1557,7 +1557,7 @@ final class IRFactory
         }
         return 0;
     }
-    
+
     private void checkActivationName(String name, int token)
     {
         if (parser.insideFunction()) {

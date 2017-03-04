@@ -230,7 +230,7 @@ public class NativeObject extends IdScriptableObject
                   if (args.length < 1 ||
                       !(thisObj instanceof ScriptableObject))
                       return Undefined.instance;
-                  
+
                   ScriptableObject so = (ScriptableObject)thisObj;
                   String name = ScriptRuntime.toStringIdOrIndex(cx, args[0]);
                   int index = (name != null ? 0

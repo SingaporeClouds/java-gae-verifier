@@ -400,8 +400,8 @@ class TokenStream
                     // Return the corresponding token if it's a keyword
                     int result = stringToKeyword(str);
                     if (result != Token.EOF) {
-                        if ((result == Token.LET || result == Token.YIELD) && 
-                            parser.compilerEnv.getLanguageVersion() 
+                        if ((result == Token.LET || result == Token.YIELD) &&
+                            parser.compilerEnv.getLanguageVersion()
                                < Context.VERSION_1_7)
                         {
                             // LET and YIELD are tokens only in 1.7 and later
@@ -1218,7 +1218,7 @@ class TokenStream
             Kit.codeBug();
         ungetBuffer[ungetCursor++] = c;
     }
-    
+
     private boolean matchChar(int test) throws IOException
     {
         int c = getCharIgnoreLineEnd();
@@ -1288,7 +1288,7 @@ class TokenStream
             return c;
         }
     }
-    
+
     private int getCharIgnoreLineEnd() throws IOException
     {
         if (ungetCursor != 0) {
@@ -1330,12 +1330,12 @@ class TokenStream
             return c;
         }
     }
-    
+
     private void ungetCharIgnoreLineEnd(int c)
     {
         ungetBuffer[ungetCursor++] = c;
     }
-    
+
     private void skipLine() throws IOException
     {
         // skip to end of line

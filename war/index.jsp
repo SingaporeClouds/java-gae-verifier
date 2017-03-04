@@ -1,4 +1,4 @@
-<%-- 
+<%--
     Document   : index
     Created on : Sep 13, 2010, 9:43:07 AM
     Author     : scboesch
@@ -20,11 +20,11 @@
         The test should be in the format: <br>
 
 {
-"solution": "b=2", 
-"tests": "assert_equal(2, b)", 
+"solution": "b=2",
+"tests": "assert_equal(2, b)",
 "examples": "examples"
-} 
-        
+}
+
     <form id ="test_form" name="test_form" action="/javascript" method="post" >
     	Select the language before you do the test.
 		<select name="language" id="language" onchange="changeAction()">
@@ -43,15 +43,15 @@
 
         jsonrequest:<br><textarea name="jsonrequest" rows="10" cols="50">
 {
-"solution": "b=2", 
-"tests": "assert_equal(2, b) \n assert_equal(3, b)", 
+"solution": "b=2",
+"tests": "assert_equal(2, b) \n assert_equal(3, b)",
 "examples": "examples"
 }
         </textarea> <br>
         <input type="submit" value="Submit" />
 
     </form>
-	
+
 	<div id = "footer">
 	<font color="black">
 	Contribute to Singpath. Contact PivotalExpert at gmail dot com

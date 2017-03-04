@@ -231,7 +231,7 @@ public class Node
         private Node target2;
         private Jump jumpNode;
     }
-    
+
     static class Symbol {
         Symbol(int declType, String name) {
             this.declType = declType;
@@ -239,7 +239,7 @@ public class Node
             this.index = -1;
         }
         /**
-         * One of Token.FUNCTION, Token.LP (for parameters), Token.VAR, 
+         * One of Token.FUNCTION, Token.LP (for parameters), Token.VAR,
          * Token.LET, or Token.CONST
          */
         int declType;
@@ -247,20 +247,20 @@ public class Node
         String name;
         Node.Scope containingTable;
     }
-    
+
     static class Scope extends Jump {
         public Scope(int nodeType) {
             super(nodeType);
         }
-        
+
         public Scope(int nodeType, int lineno) {
             super(nodeType, lineno);
         }
-        
+
         public Scope(int nodeType, Node n, int lineno) {
             super(nodeType, n, lineno);
         }
-        
+
         /*
          * Creates a new scope node, moving symbol table information
          * from "scope" to the new node, and making "scope" a nested
@@ -287,16 +287,16 @@ public class Node
             }
             dest.symbolTable.putAll(source.symbolTable);
         }
-        
+
         public void setParent(Scope parent) {
             this.parent = parent;
             this.top = parent == null ? (ScriptOrFnNode)this : parent.top;
         }
-        
+
         public Scope getParentScope() {
             return parent;
         }
-  
+
         public Scope getDefiningScope(String name) {
             for (Scope sn=this; sn != null; sn = sn.parent) {
                 if (sn.symbolTable == null)
@@ -306,28 +306,28 @@ public class Node
             }
             return null;
         }
-        
+
         public Symbol getSymbol(String name) {
             return symbolTable == null ? null : symbolTable.get(name);
         }
-        
+
         public void putSymbol(String name, Symbol symbol) {
             ensureSymbolTable();
             symbolTable.put(name, symbol);
             symbol.containingTable = this;
             top.addSymbol(symbol);
         }
-        
+
         public Map<String,Symbol> getSymbolTable() {
             return symbolTable;
         }
-        
+
         private void ensureSymbolTable() {
             if (symbolTable == null) {
                 symbolTable = new LinkedHashMap<String,Symbol>(5);
             }
         }
-  
+
         // Use LinkedHashMap so that the iteration order is the insertion order
         protected LinkedHashMap<String,Symbol> symbolTable;
         private Scope parent;
@@ -681,7 +681,7 @@ public class Node
         if (s == null) Kit.codeBug();
         ((StringNode)this).str = s;
     }
-    
+
     /** Can only be called when node has String context. */
     public final Scope getScope() {
         return ((StringNode)this).scope;
@@ -712,7 +712,7 @@ public class Node
         if (type != Token.TARGET  && type != Token.YIELD) Kit.codeBug();
         putIntProp(LABEL_ID_PROP, labelId);
     }
-    
+
 
     /**
      * Does consistent-return analysis on the function body when strict mode is

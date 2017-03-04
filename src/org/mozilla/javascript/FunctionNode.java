@@ -59,7 +59,7 @@ public class FunctionNode extends ScriptOrFnNode {
     public boolean getIgnoreDynamicScope() {
         return itsIgnoreDynamicScope;
     }
-    
+
     public boolean isGenerator() {
       return itsIsGenerator;
     }

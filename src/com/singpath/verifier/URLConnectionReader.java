@@ -13,7 +13,7 @@ public class URLConnectionReader {
         String inputLine = "";
         String output = "";
 
-        while ((inputLine = in.readLine()) != null) 
+        while ((inputLine = in.readLine()) != null)
         	output += inputLine;
         in.close();
         return output;
